@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <title>طبيبي - Onboarding</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Tajawal', sans-serif;
+      background: linear-gradient(135deg, #f0faff, #e0f7ff);
+      overflow: hidden;
+    }
+    .onboarding {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .slide {
+      display: none;
+      height: 100%;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      animation: fade .6s ease;
+    }
+    .slide.active { display: flex; }
+    .slide img {
+      max-width: 75%;
+      height: auto;
+      margin-bottom: 20px;
+    }
+    .slide h2 {
+      font-size: 22px;
+      margin-bottom: 10px;
+      color: #0284c7;
+    }
+    .slide p {
+      font-size: 15px;
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .primary-btn {
+      background: #0ea5e9;
+      color: white;
+      border: none;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 16px;
+      width: 100%;
+      max-width: 320px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(14,165,233,0.3);
+    }
+    .primary-btn:hover { background: #38bdf8; }
+    .telegram-btn {
+      background: #229ED9;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .telegram-btn i { font-size: 18px; }
+    .secondary-btn {
+      background: transparent;
+      border: none;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #0284c7;
+      cursor: pointer;
+    }
+    .dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 10px 0;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #cbd5e1;
+      transition: .3s;
+    }
+    .dot.active { background: #0ea5e9; transform: scale(1.1); }
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+    }
+    .nav-btn {
+      background: #0ea5e9;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .skip-btn {
+      position: absolute;
+      top: 15px;
+      left: 20px;
+      background: transparent;
+      border: none;
+      font-size: 14px;
+      color: #64748b;
+      cursor: pointer;
+    }
+    @keyframes fade { from{opacity:0; transform:translateX(40px);} to{opacity:1; transform:translateX(0);} }
+  </style>
+</head>
+<body>
+  <div class="onboarding">
+    <button class="skip-btn" id="skipBtn">تخطي</button>
+
+    <!-- Slide 1 -->
+    <div class="slide active">
+      <img src="https://undraw.co/api/illustrations/medical_research.svg" alt="طبيبي - شعار">
+      <h2>مرحباً بك في تطبيق طبيبي</h2>
+      <p>أول تطبيق سوري لتشخيص الأمراض بالذكاء الاصطناعي</p>
+      <button class="primary-btn">ابدأ الآن</button>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide">
+      <img src="https://undraw.co/api/illustrations/doctor.svg" alt="ميزات طبيبي">
+      <h2>🚀 الميزات الرائعة</h2>
+      <p>📷 نظام تحليل الصور الطبية<br>👩‍⚕ نظام القصة السريرية الذكي</p>
+      <button class="primary-btn">استكشف الميزات</button>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide">
+      <img src="https://undraw.co/api/illustrations/health_data.svg" alt="لماذا طبيبي؟">
+      <h2>لماذا تستخدم طبيبي ❗️❗️</h2>
+      <p>✅ أول تطبيق من نوعه في سوريا<br>✅ واجهة عربية سهلة<br>✅ نتائج دقيقة وموثوقة<br>✅ يحافظ على الخصوصية</p>
+      <button class="primary-btn">جرب الآن</button>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="slide">
+      <img src="https://undraw.co/api/illustrations/social_influencer.svg" alt="انضم الآن">
+      <h2>ماذا تنتظر؟</h2>
+      <p>اشترك في قناتنا على التليجرام لمعرفة المزيد</p>
+      <a href="https://t.me/TabibiSY" target="_blank">
+        <button class="primary-btn telegram-btn"><i class="fab fa-telegram-plane"></i> انضم الآن</button>
+      </a>
+    </div>
+
+    <!-- Dots -->
+    <div class="dots"></div>
+
+    <!-- Navigation -->
+    <div class="controls">
+      <button class="nav-btn" id="prevBtn"><i class="fas fa-arrow-right"></i></button>
+      <button class="nav-btn" id="nextBtn"><i class="fas fa-arrow-left"></i></button>
+    </div>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const dotsContainer = document.querySelector('.dots');
+    let current = 0;
+
+    // إنشاء النقاط
+    slides.forEach((_, i) => {
+      const dot = document.createElement('span');
+      dot.className = 'dot' + (i===0? ' active':'');
+      dot.addEventListener('click', ()=> showSlide(i));
+      dotsContainer.appendChild(dot);
+    });
+    const dots = document.querySelectorAll('.dot');
+
+    function showSlide(n){
+      slides.forEach((s,i)=> s.classList.toggle('active', i===n));
+      dots.forEach((d,i)=> d.classList.toggle('active', i===n));
+      current = n;
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', ()=>{
+      if(current > 0) showSlide(current-1);
+    });
+    document.getElementById('nextBtn').addEventListener('click', ()=>{
+      if(current < slides.length-1) showSlide(current+1);
+    });
+    document.getElementById('skipBtn').addEventListener('click', ()=>{
+      showSlide(slides.length-1);
+    });
+  </script>
+</body>
+</html>
