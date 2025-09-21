@@ -2,199 +2,658 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-  <title>طبيبي - Onboarding</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ترحيب بطبيبي - تطبيق التشخيص الطبي بالذكاء الاصطناعي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body {
+    * {
       margin: 0;
-      font-family: 'Tajawal', sans-serif;
-      background: linear-gradient(135deg, #f0faff, #e0f7ff);
-      overflow: hidden;
+      padding: 0;
+      box-sizing: border-box;
     }
-    .onboarding {
-      position: relative;
-      width: 100%;
+
+    /* Light Mode (افتراضي) */
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      color: #2c3e50;
+      overflow-x: hidden;
       height: 100vh;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
     }
-    .slide {
-      display: none;
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
       height: 100%;
+      background: rgba(0, 116, 212, 0.05);
+      z-index: -1;
+    }
+
+    .onboarding-container {
+      width: 100vw; /* فول سايز دائماً */
+      height: 100vh; /* فول سايز دائماً */
+      background: #ffffff;
+      box-shadow: none; /* بدون ظل للفول سايز */
+      border-radius: 0; /* بدون حواف مخفية */
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      margin: 0; /* بدون هامش */
+    }
+
+    /* Dark Mode (تلقائي حسب إعدادات الهاتف) */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #121212 0%, #1e1e1e 100%); /* تدرج أسود/رمادي مظلم */
+        color: #e0e0e0; /* نصوص فاتحة */
+      }
+
+      body::before {
+        background: rgba(255, 255, 255, 0.03); /* overlay خفيف مظلم */
+      }
+
+      .onboarding-container {
+        background: #1e1e1e; /* خلفية رمادي مظلم */
+      }
+
+      .slide h2 {
+        color: #4fc3f7; /* أزرق فاتح للعناوين في الدارك */
+      }
+
+      .slide p {
+        color: #b0bec5; /* رمادي فاتح للنصوص */
+      }
+
+      .dot {
+        background: #424242; /* رمادي مظلم للدوتس */
+      }
+
+      .dot.active {
+        background: linear-gradient(135deg, #4fc3f7, #81d4fa); /* أزرق فاتح */
+      }
+
+      .nav-btn {
+        color: #4fc3f7;
+      }
+
+      .nav-btn.skip {
+        color: #78909c;
+      }
+
+      .signup-btn {
+        background: linear-gradient(135deg, #4fc3f7, #81d4fa); /* أزرق في الدارك */
+      }
+
+      .login-btn {
+        background: linear-gradient(135deg, #66bb6a, #a5d6a7); /* أخضر في الدارك */
+      }
+
+      .slide-image {
+        border: 3px solid rgba(79, 195, 247, 0.3); /* إطار أزرق خفيف */
+      }
+    }
+
+    /* السلايدات - بدون تغيير كبير */
+    .slides-wrapper {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      height: 70%;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      padding: 50px 30px;
       text-align: center;
-      padding: 20px;
-      animation: fade .6s ease;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(100%);
+      transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
-    .slide.active { display: flex; }
-    .slide img {
-      max-width: 75%;
-      height: auto;
-      margin-bottom: 20px;
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(0);
     }
+
+    .slide.prev {
+      transform: translateX(-100%);
+    }
+
+    .slide.next {
+      transform: translateX(100%);
+    }
+
+    /* تأثيرات الانتقال نفسها */
+    .slide.fade-in { animation: fadeInScale 0.6s ease-out forwards; }
+    .slide.slide-left { animation: slideFromRight 0.6s ease-out forwards; }
+    .slide.slide-right { animation: slideFromLeft 0.6s ease-out forwards; }
+    .slide.flip-in { animation: flipInY 0.8s ease-out forwards; perspective: 1000px; }
+
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: translateX(100%) scale(0.95); }
+      to { opacity: 1; transform: translateX(0) scale(1); }
+    }
+
+    @keyframes slideFromRight {
+      from { opacity: 0; transform: translateX(100%); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideFromLeft {
+      from { opacity: 0; transform: translateX(-100%); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes flipInY {
+      from { opacity: 0; transform: perspective(1000px) rotateY(90deg) translateX(50%); }
+      to { opacity: 1; transform: perspective(1000px) rotateY(0) translateX(0); }
+    }
+
+    .slide:nth-child(1).active { animation: fadeInScale 0.6s ease-out; }
+    .slide:nth-child(2).active { animation: slideFromRight 0.6s ease-out; }
+    .slide:nth-child(3).active { animation: flipInY 0.8s ease-out; }
+    .slide:nth-child(4).active { animation: slideFromLeft 0.6s ease-out; }
+    .slide:nth-child(5).active { animation: fadeInScale 0.6s ease-out; }
+    .slide:nth-child(6).active { animation: slideFromRight 0.6s ease-out; }
+
+    /* صور طبية محسنة (غير دائرية، مستطيلة) */
+    .slide-image {
+      width: 100%; /* عرض كامل للسلايد */
+      max-width: 300px; /* حد أقصى للقراءة */
+      height: 200px; /* ارتفاع ثابت */
+      margin-bottom: 30px;
+      border-radius: 15px; /* حواف مستديرة خفيفة (غير دائرية) */
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 15px 40px rgba(0, 116, 212, 0.15), inset 0 0 20px rgba(255, 255, 255, 0.5);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 3px solid rgba(30, 136, 229, 0.2);
+    }
+
+    .slide-image:hover,
+    .slide-image:active {
+      transform: scale(1.02); /* تكبير خفيف فقط */
+      box-shadow: 0 20px 50px rgba(0, 116, 212, 0.25);
+    }
+
+    .slide-image::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(0, 116, 212, 0.08), rgba(76, 175, 80, 0.08), rgba(255, 152, 0, 0.08));
+      z-index: 1;
+      border-radius: 15px;
+      animation: gentlePulse 3s ease-in-out infinite;
+    }
+
+    @keyframes gentlePulse {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.03); }
+    }
+
+    .slide-image i {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 80px; /* أصغر قليلاً للمستطيل */
+      color: rgba(255, 255, 255, 0.9);
+      z-index: 2;
+      text-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+    }
+
     .slide h2 {
-      font-size: 22px;
-      margin-bottom: 10px;
-      color: #0284c7;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: #1e88e5; /* أزرق في اللایت، يتغير في الدارك */
+      line-height: 1.3;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
+
     .slide p {
-      font-size: 15px;
-      color: #555;
+      font-size: 16px;
+      font-weight: 400;
+      color: #546e7a; /* رمادي في اللایت، يتغير في الدارك */
       line-height: 1.6;
       margin-bottom: 20px;
-    }
-    .primary-btn {
-      background: #0ea5e9;
-      color: white;
-      border: none;
-      padding: 14px 20px;
-      border-radius: 12px;
-      font-size: 16px;
-      width: 100%;
       max-width: 320px;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(14,165,233,0.3);
+      padding: 0 10px;
     }
-    .primary-btn:hover { background: #38bdf8; }
-    .telegram-btn {
-      background: #229ED9;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    .telegram-btn i { font-size: 18px; }
-    .secondary-btn {
-      background: transparent;
-      border: none;
-      margin-top: 10px;
-      font-size: 14px;
-      color: #0284c7;
-      cursor: pointer;
-    }
+
+    /* Dots و Navigation نفس السابق */
     .dots {
       display: flex;
       justify-content: center;
-      gap: 8px;
-      margin: 10px 0;
+      gap: 12px;
+      margin: 25px 0;
+      padding: 0 30px;
     }
+
     .dot {
-      width: 10px;
-      height: 10px;
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
-      background: #cbd5e1;
-      transition: .3s;
+      background: #e0e0e0;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
-    .dot.active { background: #0ea5e9; transform: scale(1.1); }
-    .controls {
+
+    .dot.active {
+      background: linear-gradient(135deg, #1e88e5, #42a5f5);
+      transform: scale(1.3);
+      box-shadow: 0 0 15px rgba(30, 136, 229, 0.6);
+    }
+
+    .navigation {
+      position: absolute;
+      bottom: 30px;
+      left: 0;
+      right: 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px;
+      padding: 0 30px;
+      z-index: 10;
     }
+
     .nav-btn {
-      background: #0ea5e9;
-      color: #fff;
+      background: none;
       border: none;
-      border-radius: 50%;
-      width: 42px;
-      height: 42px;
-      font-size: 18px;
+      color: #1e88e5;
+      font-size: 16px;
       cursor: pointer;
+      font-weight: 600;
+      transition: color 0.3s ease;
+      padding: 12px 0;
+      min-width: 80px;
     }
-    .skip-btn {
-      position: absolute;
-      top: 15px;
-      left: 20px;
-      background: transparent;
-      border: none;
+
+    .nav-btn:hover {
+      color: #1565c0;
+      transform: scale(1.05);
+    }
+
+    .nav-btn.skip {
+      color: #78909c;
       font-size: 14px;
-      color: #64748b;
-      cursor: pointer;
+      opacity: 0.8;
     }
-    @keyframes fade { from{opacity:0; transform:translateX(40px);} to{opacity:1; transform:translateX(0);} }
+
+    .nav-btn.skip:hover {
+      color: #546e7a;
+      opacity: 1;
+    }
+
+    /* الزرين في السلايد الأخير (يتغيران في الدارك) */
+    .final-buttons {
+      display: none;
+      flex-direction: column;
+      gap: 15px;
+      width: 100%;
+      max-width: 280px;
+      margin: 20px auto;
+      padding: 0 10px;
+    }
+
+    .final-buttons.show {
+      display: flex;
+    }
+
+    .signup-btn, .login-btn {
+      width: 100%;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .signup-btn {
+      background: linear-gradient(135deg, #1e88e5, #42a5f5);
+      color: white;
+    }
+
+    .login-btn {
+      background: linear-gradient(135deg, #4caf50, #81c784);
+      color: white;
+    }
+
+    .signup-btn:hover, .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .signup-btn:active, .login-btn:active {
+      transform: translateY(0);
+    }
+
+    #nextBtn.final { display: none; }
+
+    /* Responsive (محسن للفول سايز - يتكيف فقط في الارتفاع والنصوص) */
+    @media (max-width: 480px) {
+      .slides-wrapper {
+        height: 65%;
+      }
+
+      .slide {
+        padding: 40px 20px;
+      }
+
+      .slide-image {
+        max-width: 250px;
+        height: 180px;
+      }
+
+      .slide-image i {
+        font-size: 60px;
+      }
+
+      .slide h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+
+      .slide p {
+        font-size: 14px;
+        max-width: 280px;
+      }
+
+      .final-buttons {
+        gap: 10px;
+        max-width: 100%;
+      }
+
+      .signup-btn, .login-btn {
+        padding: 12px 18px;
+        font-size: 14px;
+      }
+
+      .dots {
+        gap: 8px;
+        margin: 15px 0;
+        padding: 0 20px;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+      }
+
+      .navigation {
+        bottom: 20px;
+        padding: 0 20px;
+      }
+
+      .nav-btn {
+        font-size: 14px;
+        min-width: 60px;
+      }
+    }
+
+    @media (min-height: 800px) {
+      .slide {
+        padding: 60px 30px; /* مسافات أكبر على الشاشات الطويلة */
+      }
+    }
+
+    @media (max-height: 500px) and (orientation: landscape) {
+      .slides-wrapper {
+        height: 60%;
+      }
+
+      .slide {
+        padding: 20px 15px;
+      }
+
+      .slide-image {
+        height: 120px;
+        max-width: 200px;
+      }
+
+      .slide h2 {
+        font-size: 20px;
+      }
+
+      .slide p {
+        font-size: 12px;
+        max-width: 250px;
+      }
+
+      .final-buttons {
+        gap: 8px;
+        max-width: 200px;
+      }
+
+      .navigation {
+        bottom: 10px;
+        padding: 0 15px;
+      }
+    }
+
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      .slide-image {
+        box-shadow: 0 20px 50px rgba(0, 116, 212, 0.2);
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="onboarding">
-    <button class="skip-btn" id="skipBtn">تخطي</button>
+  <div class="onboarding-container">
+    <div class="slides-wrapper">
+      <!-- Slide 1: ترحيب -->
+      <div class="slide active" data-slide="1">
+        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1552098967-2a8de4c5e0a5?w=500&fit=crop');"> <!-- صورة قلب طبي داخلي حقيقي -->
+          <i class="fas fa-heartbeat" style="color: #e91e63;"></i>
+        </div>
+        <h2>مرحباً بك في طبيبي</h2>
+        <p>أول تطبيق تشخيص أمراض بالذكاء الاصطناعي في سوريا، رفيقك الصحي الذكي لتشخيص دقيق وسريع.</p>
+      </div>
 
-    <!-- Slide 1 -->
-    <div class="slide active">
-      <img src="https://undraw.co/api/illustrations/medical_research.svg" alt="طبيبي - شعار">
-      <h2>مرحباً بك في تطبيق طبيبي</h2>
-      <p>أول تطبيق سوري لتشخيص الأمراض بالذكاء الاصطناعي</p>
-      <button class="primary-btn">ابدأ الآن</button>
+      <!-- Slide 2: تشخيص سريع -->
+      <div class="slide" data-slide="2">
+        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500&fit=crop');"> <!-- صورة استيتوسكوب طبي كلاسيكي -->
+          <i class="fas fa-stethoscope" style="color: #2196f3;"></i>
+        </div>
+        <h2>تشخيص سريع ودقيق</h2>
+        <p>وصف أعراضك، ويحلل الذكاء الاصطناعي البيانات ليقدم تشخيصات محتملة مدعومة بمعارف طبية عالمية.</p>
+      </div>
+
+      <!-- Slide 3: استشارات -->
+      <div class="slide" data-slide="3">
+        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=500&fit=crop');"> <!-- صورة طبيب يفحص مريض بجهاز طبي -->
+          <i class="fas fa-user-md" style="color: #4caf50;"></i>
+        </div>
+        <h2>استشارات طبية ذكية</h2>
+        <p>احصل على نصائح وخطط علاجية مخصصة كأنك تتحدث مع طبيب حقيقي، متاح 24/7.</p>
+      </div>
+
+      <!-- Slide 4: خصوصية -->
+      <div class="slide" data-slide="4">
+        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1585390518402-8f8ca3f6df08?w=500&fit=crop');"> <!-- صورة قفل أمان في سياق طبي (بيانات محمية) -->
+          <i class="fas fa-shield-alt" style="color: #ff9800;"></i>
+        </div>
+        <h2>خصوصية بياناتك محمية</h2>
+        <p>جميع بياناتك مشفرة وآمنة بنسبة 100%، ملتزمون بأعلى معايير الخصوصية الطبية العالمية.</p>
+      </div>
+
+      <!-- Slide 5: توفير -->
+      <div class="slide" data-slide="5">
+        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1521673654694-9f9e5b8a0f64?w=500&fit=crop');"> <!-- صورة ساعة في غرفة طبيب (توفير الوقت الطبي) -->
+          <i class="fas fa-clock" style="color: #9c27b0;"></i>
+        </div>
+        <h2>وفر وقتك وجهدك</h2>
+        <p>لا تنتظر في طوابير العيادات؛ احصل على إجابات فورية وموثوقة مباشرة من هاتفك الذكي.</p>
+      </div>
+
+      <!-- Slide 6: بدء -->
+      <div class="slide" data-slide="6">
+        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=500&fit=crop');"> <!-- صورة طبيب مع تقنية AI طبية -->
+          <i class="fas fa-laptop-medical" style="color: #ff5722;"></i>
+        </div>
+        <h2>ابدأ رحلتك الصحية اليوم</h2>
+        <p>انضم إلى مجتمع طبيبي واستمتع بتشخيصات ذكية لصحة أفضل. التسجيل مجاني وسهل!</p>
+        <div class="final-buttons show">
+          <button class="signup-btn" onclick="signupUser()">
+            <i class="fas fa-user-plus"></i> تسجيل حساب جديد
+          </button>
+          <button class="login-btn" onclick="loginUser()">
+            <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+          </button>
+        </div>
+      </div>
     </div>
 
-    <!-- Slide 2 -->
-    <div class="slide">
-      <img src="https://undraw.co/api/illustrations/doctor.svg" alt="ميزات طبيبي">
-      <h2>🚀 الميزات الرائعة</h2>
-      <p>📷 نظام تحليل الصور الطبية<br>👩‍⚕ نظام القصة السريرية الذكي</p>
-      <button class="primary-btn">استكشف الميزات</button>
+    <!-- Dots Navigation -->
+    <div class="dots">
+      <span class="dot active" onclick="goToSlide(1)"></span>
+      <span class="dot" onclick="goToSlide(2)"></span>
+      <span class="dot" onclick="goToSlide(3)"></span>
+      <span class="dot" onclick="goToSlide(4)"></span>
+      <span class="dot" onclick="goToSlide(5)"></span>
+      <span class="dot" onclick="goToSlide(6)"></span>
     </div>
 
-    <!-- Slide 3 -->
-    <div class="slide">
-      <img src="https://undraw.co/api/illustrations/health_data.svg" alt="لماذا طبيبي؟">
-      <h2>لماذا تستخدم طبيبي ❗️❗️</h2>
-      <p>✅ أول تطبيق من نوعه في سوريا<br>✅ واجهة عربية سهلة<br>✅ نتائج دقيقة وموثوقة<br>✅ يحافظ على الخصوصية</p>
-      <button class="primary-btn">جرب الآن</button>
-    </div>
-
-    <!-- Slide 4 -->
-    <div class="slide">
-      <img src="https://undraw.co/api/illustrations/social_influencer.svg" alt="انضم الآن">
-      <h2>ماذا تنتظر؟</h2>
-      <p>اشترك في قناتنا على التليجرام لمعرفة المزيد</p>
-      <a href="https://t.me/TabibiSY" target="_blank">
-        <button class="primary-btn telegram-btn"><i class="fab fa-telegram-plane"></i> انضم الآن</button>
-      </a>
-    </div>
-
-    <!-- Dots -->
-    <div class="dots"></div>
-
-    <!-- Navigation -->
-    <div class="controls">
-      <button class="nav-btn" id="prevBtn"><i class="fas fa-arrow-right"></i></button>
-      <button class="nav-btn" id="nextBtn"><i class="fas fa-arrow-left"></i></button>
+    <!-- Navigation Buttons -->
+    <div class="navigation">
+      <button class="nav-btn skip" onclick="skipOnboarding()">تخطي</button>
+      <button class="nav-btn" id="nextBtn" onclick="nextSlide()">
+        التالي
+      </button>
     </div>
   </div>
 
   <script>
-    const slides = document.querySelectorAll('.slide');
-    const dotsContainer = document.querySelector('.dots');
-    let current = 0;
+    // نفس الـ JS السابق، بدون تغييرات هامة
+    let currentSlide = 1;
+    const totalSlides = 6;
 
-    // إنشاء النقاط
-    slides.forEach((_, i) => {
-      const dot = document.createElement('span');
-      dot.className = 'dot' + (i===0? ' active':'');
-      dot.addEventListener('click', ()=> showSlide(i));
-      dotsContainer.appendChild(dot);
-    });
-    const dots = document.querySelectorAll('.dot');
+    function showSlide(n) {
+      const slides = document.querySelectorAll('.slide');
+      const dots = document.querySelectorAll('.dot');
+      const nextBtn = document.getElementById('nextBtn');
+      const finalButtons = document.querySelector('.final-buttons');
 
-    function showSlide(n){
-      slides.forEach((s,i)=> s.classList.toggle('active', i===n));
-      dots.forEach((d,i)=> d.classList.toggle('active', i===n));
-      current = n;
+      if (n > totalSlides) currentSlide = totalSlides;
+      if (n < 1) currentSlide = 1;
+
+      slides.forEach((slide, index) => {
+        slide.classList.remove('active', 'prev', 'next');
+        if (index + 1 === currentSlide) {
+          slide.classList.add('active');
+        } else if (index + 1 < currentSlide) {
+          slide.classList.add('prev');
+        } else {
+          slide.classList.add('next');
+        }
+      });
+
+      dots.forEach((dot, index) => dot.classList.toggle('active', index + 1 === currentSlide));
+
+      if (currentSlide === totalSlides) {
+        nextBtn.classList.add('final');
+        nextBtn.innerHTML = '';
+        finalButtons.classList.add('show');
+      } else {
+        nextBtn.classList.remove('final');
+        nextBtn.innerHTML = 'التالي';
+        finalButtons.classList.remove('show');
+        nextBtn.onclick = nextSlide;
+      }
     }
 
-    document.getElementById('prevBtn').addEventListener('click', ()=>{
-      if(current > 0) showSlide(current-1);
+    function nextSlide() {
+      const oldSlide = currentSlide;
+      currentSlide++;
+      document.querySelectorAll('.slide')[oldSlide - 1].classList.add('slide-right');
+      showSlide(currentSlide);
+    }
+
+    function goToSlide(n) {
+      currentSlide = n;
+      showSlide(currentSlide);
+    }
+
+    function skipOnboarding() {
+      window.location.href = '../index.html';
+    }
+
+    function signupUser() {
+      window.location.href = 'signup.html'; // غير برابطك
+    }
+
+    function loginUser() {
+      window.location.href = 'login.html'; // غير برابطك
+    }
+
+    // Swipe
+    let startX = 0;
+    let endX = 0;
+
+    document.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+    }, { passive: true });
+
+    document.addEventListener('touchend', (e) => {
+      endX = e.changedTouches[0].clientX;
+      const diff = startX - endX;
+      if (Math.abs(diff) > 60) {
+        if (diff > 0) nextSlide();
+        else { 
+          const oldSlide = currentSlide;
+          currentSlide--; 
+          document.querySelectorAll('.slide')[oldSlide - 1].classList.add('slide-left');
+          showSlide(currentSlide);
+        }
+      }
+    }, { passive: true });
+
+    // Keyboard
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { 
+        const oldSlide = currentSlide;
+        currentSlide--; 
+        document.querySelectorAll('.slide')[oldSlide - 1].classList.add('slide-left');
+        showSlide(currentSlide);
+      }
+      if (e.key === 'ArrowLeft') nextSlide();
+      if (e.key === 'Enter' && currentSlide === totalSlides) signupUser();
     });
-    document.getElementById('nextBtn').addEventListener('click', ()=>{
-      if(current < slides.length-1) showSlide(current+1);
-    });
-    document.getElementById('skipBtn').addEventListener('click', ()=>{
-      showSlide(slides.length-1);
-    });
+
+    showSlide(1);
   </script>
 </body>
 </html>
