@@ -40,71 +40,79 @@
     }
 
     .onboarding-container {
-      width: 100vw; /* فول سايز دائماً */
-      height: 100vh; /* فول سايز دائماً */
+      width: 100vw;
+      height: 100vh;
       background: #ffffff;
-      box-shadow: none; /* بدون ظل للفول سايز */
-      border-radius: 0; /* بدون حواف مخفية */
+      box-shadow: none;
+      border-radius: 0;
       overflow: hidden;
       position: relative;
       display: flex;
       flex-direction: column;
-      margin: 0; /* بدون هامش */
+      margin: 0;
     }
 
-    /* Dark Mode (تلقائي حسب إعدادات الهاتف) */
+    /* Dark Mode (تلقائي) */
     @media (prefers-color-scheme: dark) {
       body {
-        background: linear-gradient(135deg, #121212 0%, #1e1e1e 100%); /* تدرج أسود/رمادي مظلم */
-        color: #e0e0e0; /* نصوص فاتحة */
+        background: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
+        color: #e0e0e0;
       }
 
       body::before {
-        background: rgba(255, 255, 255, 0.03); /* overlay خفيف مظلم */
+        background: rgba(255, 255, 255, 0.03);
       }
 
       .onboarding-container {
-        background: #1e1e1e; /* خلفية رمادي مظلم */
+        background: #1e1e1e;
       }
 
       .slide h2 {
-        color: #4fc3f7; /* أزرق فاتح للعناوين في الدارك */
+        color: #4fc3f7;
       }
 
       .slide p {
-        color: #b0bec5; /* رمادي فاتح للنصوص */
+        color: #b0bec5;
       }
 
       .dot {
-        background: #424242; /* رمادي مظلم للدوتس */
+        background: #424242;
       }
 
       .dot.active {
-        background: linear-gradient(135deg, #4fc3f7, #81d4fa); /* أزرق فاتح */
+        background: linear-gradient(135deg, #4fc3f7, #81d4fa);
       }
 
       .nav-btn {
         color: #4fc3f7;
       }
 
-      .nav-btn.skip {
+      .nav-btn.prev {
+        color: #78909c; /* رمادي للـ previous إذا كان غير متاح */
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .nav-btn.prev:hover {
         color: #78909c;
+        transform: none;
       }
 
       .signup-btn {
-        background: linear-gradient(135deg, #4fc3f7, #81d4fa); /* أزرق في الدارك */
+        background: linear-gradient(135deg, #4fc3f7, #81d4fa);
       }
 
       .login-btn {
-        background: linear-gradient(135deg, #66bb6a, #a5d6a7); /* أخضر في الدارك */
+        background: linear-gradient(135deg, #66bb6a, #a5d6a7);
       }
 
       .slide-image {
-        border: 3px solid rgba(79, 195, 247, 0.3); /* إطار أزرق خفيف */
+        border: 3px solid rgba(79, 195, 247, 0.3);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.1);
       }
     }
 
-    /* السلايدات - بدون تغيير كبير */
+    /* السلايدات - نفس السابق */
     .slides-wrapper {
       flex: 1;
       position: relative;
@@ -126,64 +134,71 @@
       text-align: center;
       opacity: 0;
       visibility: hidden;
-      transform: translateX(100%);
-      transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transform: translateY(50px) scale(0.95);
+      transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 1;
     }
 
     .slide.active {
       opacity: 1;
       visibility: visible;
-      transform: translateX(0);
+      transform: translateY(0) scale(1);
+      z-index: 3;
     }
 
     .slide.prev {
-      transform: translateX(-100%);
+      opacity: 0.5;
+      transform: translateY(-20px) scale(0.98);
+      z-index: 2;
     }
 
     .slide.next {
-      transform: translateX(100%);
+      opacity: 0;
+      transform: translateY(50px) scale(0.95);
+      z-index: 1;
     }
 
-    /* تأثيرات الانتقال نفسها */
-    .slide.fade-in { animation: fadeInScale 0.6s ease-out forwards; }
-    .slide.slide-left { animation: slideFromRight 0.6s ease-out forwards; }
-    .slide.slide-right { animation: slideFromLeft 0.6s ease-out forwards; }
-    .slide.flip-in { animation: flipInY 0.8s ease-out forwards; perspective: 1000px; }
-
-    @keyframes fadeInScale {
-      from { opacity: 0; transform: translateX(100%) scale(0.95); }
-      to { opacity: 1; transform: translateX(0) scale(1); }
+    .slide.active {
+      animation: slideFadeIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
 
-    @keyframes slideFromRight {
-      from { opacity: 0; transform: translateX(100%); }
-      to { opacity: 1; transform: translateX(0); }
+    @keyframes slideFadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(50px) scale(0.95);
+      }
+      70% {
+        opacity: 1;
+        transform: translateY(-5px) scale(1.02);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
-    @keyframes slideFromLeft {
-      from { opacity: 0; transform: translateX(-100%); }
-      to { opacity: 1; transform: translateX(0); }
+    .slide.leaving {
+      animation: slideOutLeft 0.5s ease-out forwards;
     }
 
-    @keyframes flipInY {
-      from { opacity: 0; transform: perspective(1000px) rotateY(90deg) translateX(50%); }
-      to { opacity: 1; transform: perspective(1000px) rotateY(0) translateX(0); }
+    @keyframes slideOutLeft {
+      0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(100%) translateY(0) scale(0.95);
+      }
     }
 
-    .slide:nth-child(1).active { animation: fadeInScale 0.6s ease-out; }
-    .slide:nth-child(2).active { animation: slideFromRight 0.6s ease-out; }
-    .slide:nth-child(3).active { animation: flipInY 0.8s ease-out; }
-    .slide:nth-child(4).active { animation: slideFromLeft 0.6s ease-out; }
-    .slide:nth-child(5).active { animation: fadeInScale 0.6s ease-out; }
-    .slide:nth-child(6).active { animation: slideFromRight 0.6s ease-out; }
-
-    /* صور طبية محسنة (غير دائرية، مستطيلة) */
+    /* الصور (نفس السابق) */
     .slide-image {
-      width: 100%; /* عرض كامل للسلايد */
-      max-width: 300px; /* حد أقصى للقراءة */
-      height: 200px; /* ارتفاع ثابت */
+      width: 100%;
+      max-width: 300px;
+      height: 200px;
       margin-bottom: 30px;
-      border-radius: 15px; /* حواف مستديرة خفيفة (غير دائرية) */
+      border-radius: 15px;
       background-size: cover;
       background-position: center;
       box-shadow: 0 15px 40px rgba(0, 116, 212, 0.15), inset 0 0 20px rgba(255, 255, 255, 0.5);
@@ -195,7 +210,7 @@
 
     .slide-image:hover,
     .slide-image:active {
-      transform: scale(1.02); /* تكبير خفيف فقط */
+      transform: scale(1.02);
       box-shadow: 0 20px 50px rgba(0, 116, 212, 0.25);
     }
 
@@ -222,7 +237,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 80px; /* أصغر قليلاً للمستطيل */
+      font-size: 80px;
       color: rgba(255, 255, 255, 0.9);
       z-index: 2;
       text-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
@@ -233,7 +248,7 @@
       font-size: 28px;
       font-weight: 700;
       margin-bottom: 15px;
-      color: #1e88e5; /* أزرق في اللایت، يتغير في الدارك */
+      color: #1e88e5;
       line-height: 1.3;
       text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
@@ -241,14 +256,14 @@
     .slide p {
       font-size: 16px;
       font-weight: 400;
-      color: #546e7a; /* رمادي في اللایت، يتغير في الدارك */
+      color: #546e7a;
       line-height: 1.6;
       margin-bottom: 20px;
       max-width: 320px;
       padding: 0 10px;
     }
 
-    /* Dots و Navigation نفس السابق */
+    /* Dots Navigation */
     .dots {
       display: flex;
       justify-content: center;
@@ -273,6 +288,7 @@
       box-shadow: 0 0 15px rgba(30, 136, 229, 0.6);
     }
 
+    /* Navigation Buttons - محسن مع زر السابق */
     .navigation {
       position: absolute;
       bottom: 30px;
@@ -302,18 +318,26 @@
       transform: scale(1.05);
     }
 
-    .nav-btn.skip {
+    .nav-btn.prev {
       color: #78909c;
-      font-size: 14px;
       opacity: 0.8;
+      min-width: 60px;
     }
 
-    .nav-btn.skip:hover {
+    .nav-btn.prev:hover {
       color: #546e7a;
       opacity: 1;
+      transform: scale(1.05);
     }
 
-    /* الزرين في السلايد الأخير (يتغيران في الدارك) */
+    .nav-btn.prev:disabled {
+      color: #78909c;
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* الزرين في السلايد الأخير */
     .final-buttons {
       display: none;
       flex-direction: column;
@@ -363,111 +387,35 @@
 
     #nextBtn.final { display: none; }
 
-    /* Responsive (محسن للفول سايز - يتكيف فقط في الارتفاع والنصوص) */
+    /* Responsive */
     @media (max-width: 480px) {
-      .slides-wrapper {
-        height: 65%;
-      }
-
-      .slide {
-        padding: 40px 20px;
-      }
-
-      .slide-image {
-        max-width: 250px;
-        height: 180px;
-      }
-
-      .slide-image i {
-        font-size: 60px;
-      }
-
-      .slide h2 {
-        font-size: 24px;
-        margin-bottom: 10px;
-      }
-
-      .slide p {
-        font-size: 14px;
-        max-width: 280px;
-      }
-
-      .final-buttons {
-        gap: 10px;
-        max-width: 100%;
-      }
-
-      .signup-btn, .login-btn {
-        padding: 12px 18px;
-        font-size: 14px;
-      }
-
-      .dots {
-        gap: 8px;
-        margin: 15px 0;
-        padding: 0 20px;
-      }
-
-      .dot {
-        width: 10px;
-        height: 10px;
-      }
-
-      .navigation {
-        bottom: 20px;
-        padding: 0 20px;
-      }
-
-      .nav-btn {
-        font-size: 14px;
-        min-width: 60px;
-      }
+      .slides-wrapper { height: 65%; }
+      .slide { padding: 40px 20px; }
+      .slide-image { max-width: 250px; height: 180px; }
+      .slide-image i { font-size: 60px; }
+      .slide h2 { font-size: 24px; margin-bottom: 10px; }
+      .slide p { font-size: 14px; max-width: 280px; }
+      .final-buttons { gap: 10px; max-width: 100%; }
+      .signup-btn, .login-btn { padding: 12px 18px; font-size: 14px; }
+      .dots { gap: 8px; margin: 15px 0; padding: 0 20px; }
+      .dot { width: 10px; height: 10px; }
+      .navigation { bottom: 20px; padding: 0 20px; }
+      .nav-btn { font-size: 14px; min-width: 60px; }
     }
 
-    @media (min-height: 800px) {
-      .slide {
-        padding: 60px 30px; /* مسافات أكبر على الشاشات الطويلة */
-      }
-    }
-
+    @media (min-height: 800px) { .slide { padding: 60px 30px; } }
     @media (max-height: 500px) and (orientation: landscape) {
-      .slides-wrapper {
-        height: 60%;
-      }
-
-      .slide {
-        padding: 20px 15px;
-      }
-
-      .slide-image {
-        height: 120px;
-        max-width: 200px;
-      }
-
-      .slide h2 {
-        font-size: 20px;
-      }
-
-      .slide p {
-        font-size: 12px;
-        max-width: 250px;
-      }
-
-      .final-buttons {
-        gap: 8px;
-        max-width: 200px;
-      }
-
-      .navigation {
-        bottom: 10px;
-        padding: 0 15px;
-      }
+      .slides-wrapper { height: 60%; }
+      .slide { padding: 20px 15px; }
+      .slide-image { height: 120px; max-width: 200px; }
+      .slide h2 { font-size: 20px; }
+      .slide p { font-size: 12px; max-width: 250px; }
+      .final-buttons { gap: 8px; max-width: 200px; }
+      .navigation { bottom: 10px; padding: 0 15px; }
     }
 
     @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-      .slide-image {
-        box-shadow: 0 20px 50px rgba(0, 116, 212, 0.2);
-      }
+      .slide-image { box-shadow: 0 20px 50px rgba(0, 116, 212, 0.2); }
     }
   </style>
 </head>
@@ -476,7 +424,7 @@
     <div class="slides-wrapper">
       <!-- Slide 1: ترحيب -->
       <div class="slide active" data-slide="1">
-        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1552098967-2a8de4c5e0a5?w=500&fit=crop');"> <!-- صورة قلب طبي داخلي حقيقي -->
+        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=500&fit=crop');">
           <i class="fas fa-heartbeat" style="color: #e91e63;"></i>
         </div>
         <h2>مرحباً بك في طبيبي</h2>
@@ -485,7 +433,7 @@
 
       <!-- Slide 2: تشخيص سريع -->
       <div class="slide" data-slide="2">
-        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500&fit=crop');"> <!-- صورة استيتوسكوب طبي كلاسيكي -->
+        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500&fit=crop');">
           <i class="fas fa-stethoscope" style="color: #2196f3;"></i>
         </div>
         <h2>تشخيص سريع ودقيق</h2>
@@ -494,7 +442,7 @@
 
       <!-- Slide 3: استشارات -->
       <div class="slide" data-slide="3">
-        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=500&fit=crop');"> <!-- صورة طبيب يفحص مريض بجهاز طبي -->
+        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=500&fit=crop');">
           <i class="fas fa-user-md" style="color: #4caf50;"></i>
         </div>
         <h2>استشارات طبية ذكية</h2>
@@ -503,7 +451,7 @@
 
       <!-- Slide 4: خصوصية -->
       <div class="slide" data-slide="4">
-        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1585390518402-8f8ca3f6df08?w=500&fit=crop');"> <!-- صورة قفل أمان في سياق طبي (بيانات محمية) -->
+        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1620712943543-53db4e24336c?w=500&fit=crop');">
           <i class="fas fa-shield-alt" style="color: #ff9800;"></i>
         </div>
         <h2>خصوصية بياناتك محمية</h2>
@@ -512,7 +460,7 @@
 
       <!-- Slide 5: توفير -->
       <div class="slide" data-slide="5">
-        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1521673654694-9f9e5b8a0f64?w=500&fit=crop');"> <!-- صورة ساعة في غرفة طبيب (توفير الوقت الطبي) -->
+        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&fit=crop');">
           <i class="fas fa-clock" style="color: #9c27b0;"></i>
         </div>
         <h2>وفر وقتك وجهدك</h2>
@@ -521,7 +469,7 @@
 
       <!-- Slide 6: بدء -->
       <div class="slide" data-slide="6">
-        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=500&fit=crop');"> <!-- صورة طبيب مع تقنية AI طبية -->
+        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&fit=crop');">
           <i class="fas fa-laptop-medical" style="color: #ff5722;"></i>
         </div>
         <h2>ابدأ رحلتك الصحية اليوم</h2>
@@ -547,17 +495,14 @@
       <span class="dot" onclick="goToSlide(6)"></span>
     </div>
 
-    <!-- Navigation Buttons -->
+    <!-- Navigation Buttons - زر السابق بدلاً من تخطي -->
     <div class="navigation">
-      <button class="nav-btn skip" onclick="skipOnboarding()">تخطي</button>
-      <button class="nav-btn" id="nextBtn" onclick="nextSlide()">
-        التالي
-      </button>
+      <button class="nav-btn prev" id="prevBtn" onclick="previousSlide()">السابق</button>
+      <button class="nav-btn" id="nextBtn" onclick="nextSlide()">التالي</button>
     </div>
   </div>
 
   <script>
-    // نفس الـ JS السابق، بدون تغييرات هامة
     let currentSlide = 1;
     const totalSlides = 6;
 
@@ -565,13 +510,27 @@
       const slides = document.querySelectorAll('.slide');
       const dots = document.querySelectorAll('.dot');
       const nextBtn = document.getElementById('nextBtn');
+      const prevBtn = document.getElementById('prevBtn');
       const finalButtons = document.querySelector('.final-buttons');
 
-      if (n > totalSlides) currentSlide = totalSlides;
-      if (n < 1) currentSlide = 1;
+      // منع الخروج عن النطاق
+      if (n > totalSlides) n = totalSlides;
+      if (n < 1) n = 1;
+
+      currentSlide = n;
+
+      // إزالة كل التأثيرات السابقة
+      slides.forEach(slide => {
+        slide.classList.remove('active', 'prev', 'next', 'leaving');
+      });
+
+      if (n > currentSlide) {
+        slides[currentSlide - 1].classList.add('leaving');
+      } else if (n < currentSlide) {
+        slides[currentSlide - 1].classList.add('leaving');
+      }
 
       slides.forEach((slide, index) => {
-        slide.classList.remove('active', 'prev', 'next');
         if (index + 1 === currentSlide) {
           slide.classList.add('active');
         } else if (index + 1 < currentSlide) {
@@ -583,43 +542,55 @@
 
       dots.forEach((dot, index) => dot.classList.toggle('active', index + 1 === currentSlide));
 
+      // إدارة الأزرار
       if (currentSlide === totalSlides) {
         nextBtn.classList.add('final');
         nextBtn.innerHTML = '';
+        nextBtn.style.display = 'none';
         finalButtons.classList.add('show');
       } else {
         nextBtn.classList.remove('final');
         nextBtn.innerHTML = 'التالي';
+        nextBtn.style.display = 'inline-block';
         finalButtons.classList.remove('show');
         nextBtn.onclick = nextSlide;
+      }
+
+      if (currentSlide === 1) {
+        prevBtn.disabled = true;
+        prevBtn.classList.add('prev');
+      } else {
+        prevBtn.disabled = false;
+        prevBtn.classList.remove('prev');
+        prevBtn.onclick = previousSlide;
       }
     }
 
     function nextSlide() {
-      const oldSlide = currentSlide;
-      currentSlide++;
-      document.querySelectorAll('.slide')[oldSlide - 1].classList.add('slide-right');
-      showSlide(currentSlide);
+      if (currentSlide < totalSlides) {
+        showSlide(currentSlide + 1);
+      }
+    }
+
+    function previousSlide() {
+      if (currentSlide > 1) {
+        showSlide(currentSlide - 1);
+      }
     }
 
     function goToSlide(n) {
-      currentSlide = n;
-      showSlide(currentSlide);
-    }
-
-    function skipOnboarding() {
-      window.location.href = '../index.html';
+      showSlide(n);
     }
 
     function signupUser() {
-      window.location.href = 'signup.html'; // غير برابطك
+      window.location.href = 'signup.html';
     }
 
     function loginUser() {
-      window.location.href = 'login.html'; // غير برابطك
+      window.location.href = 'login.html';
     }
 
-    // Swipe
+    // Swipe محسن لمنع الصفحة الفاضية
     let startX = 0;
     let endX = 0;
 
@@ -631,26 +602,25 @@
       endX = e.changedTouches[0].clientX;
       const diff = startX - endX;
       if (Math.abs(diff) > 60) {
-        if (diff > 0) nextSlide();
-        else { 
-          const oldSlide = currentSlide;
-          currentSlide--; 
-          document.querySelectorAll('.slide')[oldSlide - 1].classList.add('slide-left');
-          showSlide(currentSlide);
+        if (diff > 0 && currentSlide < totalSlides) { // التالي فقط إذا لم نكن في الأخير
+          nextSlide();
+        } else if (diff < 0 && currentSlide > 1) { // السابق فقط إذا لم نكن في الأول
+          previousSlide();
         }
       }
     }, { passive: true });
 
-    // Keyboard
+    // Keyboard محسن
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight') { 
-        const oldSlide = currentSlide;
-        currentSlide--; 
-        document.querySelectorAll('.slide')[oldSlide - 1].classList.add('slide-left');
-        showSlide(currentSlide);
+      if (e.key === 'ArrowRight' && currentSlide > 1) {
+        previousSlide();
       }
-      if (e.key === 'ArrowLeft') nextSlide();
-      if (e.key === 'Enter' && currentSlide === totalSlides) signupUser();
+      if (e.key === 'ArrowLeft' && currentSlide < totalSlides) {
+        nextSlide();
+      }
+      if (e.key === 'Enter' && currentSlide === totalSlides) {
+        signupUser();
+      }
     });
 
     showSlide(1);
