@@ -211,6 +211,26 @@
         box-shadow: 0 0 15px rgba(79, 195, 247, 0.6);
       }
 
+      .nav-btn {
+        color: #4fc3f7;
+        border-color: rgba(79, 195, 247, 0.3);
+      }
+
+      .nav-btn:hover {
+        background: linear-gradient(135deg, #4fc3f7, #81d4fa);
+        color: white;
+      }
+
+      .nav-btn.prev {
+        color: #78909c;
+        border-color: rgba(120, 144, 156, 0.3);
+      }
+
+      .nav-btn.prev:hover {
+        background: linear-gradient(135deg, #78909c, #b0bec5);
+        color: white;
+      }
+
       .slide h2 {
         color: #4fc3f7;
       }
@@ -219,42 +239,12 @@
         color: #b0bec5;
       }
 
-      .nav-btn {
-        color: #4fc3f7;
-      }
-
-      .nav-btn.prev {
-        color: #78909c;
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-
-      .nav-btn.prev:hover {
-        color: #78909c;
-        transform: none;
-      }
-
       .signup-btn {
         background: linear-gradient(135deg, #4fc3f7, #81d4fa);
       }
 
       .login-btn {
         background: linear-gradient(135deg, #66bb6a, #a5d6a7);
-      }
-
-      .navigation {
-        background: rgba(30, 136, 229, 0.1);
-        backdrop-filter: blur(20px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        border: 1px solid rgba(79, 195, 247, 0.3);
-      }
-
-      .nav-btn:hover {
-        background: rgba(79, 195, 247, 0.3);
-      }
-
-      .nav-btn.prev:hover {
-        background: rgba(120, 144, 156, 0.3);
       }
 
       .slide-image {
@@ -426,34 +416,28 @@
       padding: 0 10px;
     }
 
-    /* Navigation Buttons - تصميم أجمل وأكثر أناقة - غير أبيض تماماً، بل مع تدرج ناعم */
-    .navigation {
-      position: absolute;
-      bottom: 20px;
-      left: 0;
-      right: 0;
+    /* Navigation Buttons - أزرار بسيطة مستقلة بدون حاوي أو شكل إضافي */
+    .nav-buttons {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 15px 30px;
-      background: linear-gradient(135deg, rgba(30, 136, 229, 0.1), rgba(66, 165, 245, 0.1));
-      backdrop-filter: blur(20px);
-      border-radius: 50px;
-      margin: 0 20px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      gap: 20px; /* مسافة بين الأزرار */
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      right: 0;
       z-index: 10;
       transition: all 0.3s ease;
-      border: 1px solid rgba(30, 136, 229, 0.2);
     }
 
-    .navigation:hover {
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
-      transform: translateY(-2px);
+    .nav-buttons.hidden {
+      display: none; /* إخفاء في السلايد 6 */
     }
 
     .nav-btn {
-      background: none;
-      border: none;
+      background: transparent; /* خلفية شفافة */
+      border: 1px solid rgba(30, 136, 229, 0.3); /* حدود رقيقة */
       color: #1e88e5;
       font-size: 16px;
       cursor: pointer;
@@ -461,7 +445,7 @@
       transition: all 0.3s ease;
       padding: 12px 20px;
       min-width: 80px;
-      border-radius: 25px;
+      border-radius: 8px; /* radius بسيط للزر نفسه (غير مستدير كثيرًا) */
       position: relative;
       overflow: hidden;
     }
@@ -486,20 +470,20 @@
       transform: scale(1.05);
       background: linear-gradient(135deg, #1e88e5, #42a5f5);
       box-shadow: 0 4px 12px rgba(30, 136, 229, 0.4);
+      border-color: rgba(30, 136, 229, 0.5);
     }
 
     .nav-btn.prev {
       color: #78909c;
-      opacity: 0.8;
+      border-color: rgba(120, 144, 156, 0.3);
       min-width: 60px;
     }
 
     .nav-btn.prev:hover {
       color: #ffffff;
-      opacity: 1;
       background: linear-gradient(135deg, #78909c, #b0bec5);
-      transform: scale(1.05);
       box-shadow: 0 4px 12px rgba(120, 144, 156, 0.4);
+      border-color: rgba(120, 144, 156, 0.5);
     }
 
     .nav-btn.prev:disabled {
@@ -507,12 +491,8 @@
       opacity: 0.5;
       cursor: not-allowed;
       transform: none;
-      background: none;
-    }
-
-    /* إخفاء الشريط في السلايد 6 */
-    .navigation.hidden {
-      display: none;
+      background: transparent;
+      border-color: rgba(120, 144, 156, 0.2);
     }
 
     /* أزرار التحقق في السلايد الأخير */
@@ -626,16 +606,16 @@
         padding: 12px 18px; 
         font-size: 14px; 
       }
-      .navigation { 
+      .nav-buttons { 
         bottom: 15px; 
         padding: 12px 20px;
-        margin: 0 15px;
-        border-radius: 40px;
+        gap: 10px;
       }
       .nav-btn { 
         font-size: 14px; 
         min-width: 50px; 
         padding: 10px 15px;
+        border-radius: 6px; /* radius أصغر للشاشات الصغيرة */
       }
     }
 
@@ -688,15 +668,15 @@
         gap: 8px; 
         max-width: 200px; 
       }
-      .navigation { 
+      .nav-buttons { 
         bottom: 10px; 
         padding: 10px 15px;
-        margin: 0 10px;
-        border-radius: 30px;
+        gap: 8px;
       }
       .nav-btn { 
         font-size: 12px; 
         padding: 8px 10px;
+        border-radius: 4px; /* radius أصغر في Landscape */
       }
       .dots { 
         gap: 6px; 
@@ -752,7 +732,7 @@
       </div>
     </div>
 
-    <!-- قسم النقاط الدائرية بين المربعين - محافظ عليها لكن شفافة، ولم أحذفها لأنها ليست بين الأزرار مباشرة؛ إذا كنت تقصد حذفها، أخبرني -->
+    <!-- قسم النقاط الدائرية بين المربعين -->
     <div class="progress-dots-section">
       <div class="dots">
         <span class="dot active" onclick="goToSlide(1)"></span>
@@ -830,8 +810,8 @@
         </div>
       </div>
 
-      <!-- Navigation Buttons - لم يوجد شيء بين السابق والتالي، لذا لم أحذف شيئًا؛ إذا كنت تقصد النقاط، أخبرني لأحذفها -->
-      <div class="navigation" id="navigation">
+      <!-- Navigation Buttons - أزرار بسيطة مستقلة بدون شكل إضافي -->
+      <div class="nav-buttons" id="navButtons">
         <button class="nav-btn prev" id="prevBtn" onclick="previousSlide()">السابق</button>
         <button class="nav-btn" id="nextBtn" onclick="nextSlide()">التالي</button>
       </div>
@@ -848,7 +828,7 @@
       const dots = document.querySelectorAll('.dot');
       const nextBtn = document.getElementById('nextBtn');
       const prevBtn = document.getElementById('prevBtn');
-      const navigation = document.getElementById('navigation');
+      const navButtons = document.getElementById('navButtons');
 
       // منع الخروج عن النطاق
       if (n > totalSlides) n = totalSlides;
@@ -889,12 +869,12 @@
         nextBtn.classList.add('final');
         nextBtn.innerHTML = '';
         nextBtn.style.display = 'none';
-        navigation.classList.add('hidden'); // إخفاء الشريط في السلايد 6
+        navButtons.classList.add('hidden'); // إخفاء الأزرار في السلايد 6
       } else {
         nextBtn.classList.remove('final');
         nextBtn.innerHTML = 'التالي';
         nextBtn.style.display = 'inline-block';
-        navigation.classList.remove('hidden'); // إظهار الشريط في باقي السلايدات
+        navButtons.classList.remove('hidden'); // إظهار الأزرار في باقي السلايدات
         nextBtn.onclick = nextSlide;
       }
 
