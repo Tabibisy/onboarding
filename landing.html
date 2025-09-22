@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ترحيب بطبيبي - تطبيق التشخيص الطبي بالذكاء الاصطناعي</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -231,18 +231,31 @@
       }
 
       .navigation {
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(30, 136, 229, 0.1);
         backdrop-filter: blur(20px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(79, 195, 247, 0.1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(79, 195, 247, 0.3);
       }
 
       .nav-btn:hover {
-        background: rgba(79, 195, 247, 0.1);
+        background: rgba(79, 195, 247, 0.3);
       }
 
       .nav-btn.prev:hover {
-        background: rgba(120, 144, 156, 0.1);
+        background: rgba(120, 144, 156, 0.3);
+      }
+
+      .slide-image {
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
+      }
+
+      .slide-image i {
+        color: #4fc3f7 !important;
+      }
+
+      .final-buttons .signup-btn,
+      .final-buttons .login-btn {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
       }
     }
 
@@ -400,7 +413,7 @@
       padding: 0 10px;
     }
 
-    /* Navigation Buttons - تحسين أنيق */
+    /* Navigation Buttons - تصميم أجمل وأكثر أناقة - غير أبيض تماماً، بل مع تدرج ناعم */
     .navigation {
       position: absolute;
       bottom: 20px;
@@ -410,18 +423,18 @@
       justify-content: space-between;
       align-items: center;
       padding: 15px 30px;
-      background: rgba(255, 255, 255, 0.95);
+      background: linear-gradient(135deg, rgba(30, 136, 229, 0.1), rgba(66, 165, 245, 0.1));
       backdrop-filter: blur(20px);
       border-radius: 50px;
       margin: 0 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
       z-index: 10;
       transition: all 0.3s ease;
-      border: 1px solid rgba(30, 136, 229, 0.1);
+      border: 1px solid rgba(30, 136, 229, 0.2);
     }
 
     .navigation:hover {
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
       transform: translateY(-2px);
     }
 
@@ -432,16 +445,34 @@
       font-size: 16px;
       cursor: pointer;
       font-weight: 600;
-      transition: color 0.3s ease, transform 0.3s ease;
+      transition: all 0.3s ease;
       padding: 12px 20px;
       min-width: 80px;
       border-radius: 25px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .nav-btn:hover::before {
+      left: 100%;
     }
 
     .nav-btn:hover {
-      color: #1565c0;
+      color: #ffffff;
       transform: scale(1.05);
-      background: rgba(30, 136, 229, 0.1);
+      background: linear-gradient(135deg, #1e88e5, #42a5f5);
+      box-shadow: 0 4px 12px rgba(30, 136, 229, 0.4);
     }
 
     .nav-btn.prev {
@@ -451,10 +482,11 @@
     }
 
     .nav-btn.prev:hover {
-      color: #546e7a;
+      color: #ffffff;
       opacity: 1;
-      background: rgba(88, 110, 122, 0.1);
+      background: linear-gradient(135deg, #78909c, #b0bec5);
       transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(120, 144, 156, 0.4);
     }
 
     .nav-btn.prev:disabled {
@@ -465,13 +497,18 @@
       background: none;
     }
 
-    /* الزرين في السلايد الأخير */
+    /* إخفاء الشريط في السلايد 6 */
+    .navigation.hidden {
+      display: none;
+    }
+
+    /* أزرار التحقق في السلايد الأخير */
     .final-buttons {
       display: none;
       flex-direction: column;
       gap: 15px;
       width: 100%;
-      max-width: 280px;
+      max-width: 300px;
       margin: 20px auto;
       padding: 0 10px;
     }
@@ -747,7 +784,7 @@
           <p>لا تنتظر في طوابير العيادات؛ احصل على إجابات فورية وموثوقة مباشرة من هاتفك الذكي.</p>
         </div>
 
-        <!-- Text Slide 6 -->
+        <!-- Text Slide 6 مع الأزرار فقط -->
         <div class="text-slide" data-slide="6">
           <div class="slide-image">
             <i class="fas fa-laptop-medical"></i>
@@ -766,7 +803,7 @@
       </div>
 
       <!-- Navigation Buttons -->
-      <div class="navigation">
+      <div class="navigation" id="navigation">
         <button class="nav-btn prev" id="prevBtn" onclick="previousSlide()">السابق</button>
         <button class="nav-btn" id="nextBtn" onclick="nextSlide()">التالي</button>
       </div>
@@ -783,7 +820,7 @@
       const dots = document.querySelectorAll('.dot');
       const nextBtn = document.getElementById('nextBtn');
       const prevBtn = document.getElementById('prevBtn');
-      const finalButtons = document.querySelector('.final-buttons');
+      const navigation = document.getElementById('navigation');
 
       // منع الخروج عن النطاق
       if (n > totalSlides) n = totalSlides;
@@ -824,12 +861,12 @@
         nextBtn.classList.add('final');
         nextBtn.innerHTML = '';
         nextBtn.style.display = 'none';
-        finalButtons.classList.add('show');
+        navigation.classList.add('hidden'); // إخفاء الشريط في السلايد 6
       } else {
         nextBtn.classList.remove('final');
         nextBtn.innerHTML = 'التالي';
         nextBtn.style.display = 'inline-block';
-        finalButtons.classList.remove('show');
+        navigation.classList.remove('hidden'); // إظهار الشريط في باقي السلايدات
         nextBtn.onclick = nextSlide;
       }
 
@@ -859,6 +896,7 @@
       showSlide(n);
     }
 
+    // وظائف الانتقال إلى الصفحات المنفصلة
     function signupUser() {
       window.location.href = 'signup.html';
     }
@@ -894,9 +932,6 @@
       }
       if (e.key === 'ArrowLeft' && currentSlide < totalSlides) {
         nextSlide();
-      }
-      if (e.key === 'Enter' && currentSlide === totalSlides) {
-        signupUser();
       }
     });
 
