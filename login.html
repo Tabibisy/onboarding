@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>تسجيل الدخول - طبيبي</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -145,19 +145,19 @@
       color: #388e3c; /* تغيير لون الأيقونة عند التركيز */
     }
 
-    /* ستايل الـ checkbox المخصص (إضافة اختيارية للتوافق مع signup) */
+    /* ستايل الـ checkbox لـ "تذكرني" (غير مطلوب) */
     .checkbox-group {
       display: flex;
       justify-content: center;
-      align-items: flex-start; /* تغيير للـ align مع النص الطويل */
+      align-items: center; /* align في الوسط */
       width: 100%;
       max-width: 350px;
-      margin: 10px 0;
+      margin: 15px 0; /* مسافة أكبر قبل الزر */
     }
 
     .checkbox-label {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       font-size: 14px;
       color: #546e7a;
       cursor: pointer;
@@ -187,7 +187,6 @@
       position: relative;
       transition: all 0.3s ease;
       flex-shrink: 0;
-      margin-top: 2px; /* للـ align مع النص */
     }
 
     .checkbox-label input[type="checkbox"]:checked + .checkmark {
@@ -205,16 +204,6 @@
       transform: translate(-50%, -50%);
       color: white;
       font-size: 12px;
-    }
-
-    .checkbox-label a {
-      color: #4caf50;
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .checkbox-label a:hover {
-      text-decoration: underline;
     }
 
     .submit-btn {
@@ -316,14 +305,6 @@
 
       .checkmark {
         border-color: #555;
-      }
-
-      .checkbox-label a {
-        color: #66bb6a;
-      }
-
-      .checkbox-label a:hover {
-        text-decoration: underline;
       }
 
       .switch-link {
@@ -434,12 +415,12 @@
           <i class="fas fa-lock icon"></i>
         </div>
 
-        <!-- Checkbox للشروط (اختياري للتوافق مع signup، يمكن إزالته إذا لم يرد) -->
+        <!-- Checkbox "تذكرني" (غير مطلوب، يحفظ الاسم في localStorage) -->
         <div class="checkbox-group">
           <label class="checkbox-label">
-            <input type="checkbox" id="terms" name="terms" required>
+            <input type="checkbox" id="remember-me" name="remember-me">
             <span class="checkmark"></span>
-            أؤكد أنني أتذكر كلمة المرور وأوافق على <a href="terms.html" target="_blank">الشروط والأحكام</a>
+            تذكرني
           </label>
         </div>
 
@@ -453,20 +434,38 @@
   </div>
 
   <script>
-    document.getElementById('login-form').addEventListener('submit', function(e) {
+    const loginForm = document.getElementById('login-form');
+    const rememberMeCheckbox = document.getElementById('remember-me');
+    const usernameInput = document.getElementById('login-username');
+
+    // تحقق من حفظ "تذكرني" عند تحميل الصفحة
+    if (localStorage.getItem('rememberedUsername')) {
+      usernameInput.value = localStorage.getItem('rememberedUsername');
+      rememberMeCheckbox.checked = true;
+    }
+
+    loginForm.addEventListener('submit', function(e) {
       e.preventDefault();
       const form = this;
       if (form.checkValidity()) {
         alert('تم تسجيل الدخول بنجاح!');
         console.log('دخول بيانات:', {
-          username: document.getElementById('login-username').value,
+          username: usernameInput.value,
           password: document.getElementById('login-password').value,
-          terms: document.getElementById('terms').checked ? 'موافق' : 'غير موافق'
+          rememberMe: rememberMeCheckbox.checked
         });
+
+        // حفظ الاسم في localStorage إذا تم تحديد "تذكرني"
+        if (rememberMeCheckbox.checked) {
+          localStorage.setItem('rememberedUsername', usernameInput.value);
+        } else {
+          localStorage.removeItem('rememberedUsername');
+        }
+
         form.reset();
         // نقل إلى لوحة التحكم، مثال: window.location.href = 'dashboard.html';
       } else {
-        alert('يرجى ملء جميع الحقول وموافقة على الشروط.');
+        alert('يرجى ملء جميع الحقول.');
       }
     });
   </script>
