@@ -2,11 +2,12 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="refresh" content="15 url=landing.html">
   <title>ترحيب بطبيبي - تطبيق التشخيص الطبي بالذكاء الاصطناعي</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * {
@@ -15,615 +16,217 @@
       box-sizing: border-box;
     }
 
-    /* Light Mode (افتراضي) */
+    /* Light Mode (افتراضي - نهاري: أزرق مظلم كما طلبت) */
     body {
-      font-family: 'Cairo', sans-serif;
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-      color: #2c3e50;
-      overflow-x: hidden;
-      height: 100vh;
+      font-family: 'Tajawal', sans-serif;
+      background: linear-gradient(135deg, #0d47a1 0%, #1976d2 100%); /* أزرق مظلم طبي هادئ */
+      color: #fff;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      position: relative;
-    }
-
-    body::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 116, 212, 0.05);
-      z-index: -1;
-    }
-
-    .onboarding-container {
-      width: 100vw;
-      height: 100vh;
-      background: #ffffff;
-      box-shadow: none;
-      border-radius: 0;
+      text-align: center;
       overflow: hidden;
       position: relative;
-      display: flex;
-      flex-direction: column;
-      margin: 0;
     }
 
-    /* Dark Mode (تلقائي) */
+    .container {
+      width: 100%;
+      max-width: 700px;
+      padding: 20px;
+      z-index: 1;
+      position: relative;
+    }
+
+    /* أيقونة */
+    .logo {
+      font-size: 60px;
+      margin-bottom: 15px;
+      color: #e8f5e8; /* أخضر فاتح للأيقونة للتباين مع الأزرق المظلم */
+      animation: pulse 2s infinite, fadeSlide 1.5s forwards infinite;
+      opacity: 0;
+      transform: translateY(-40px);
+      filter: drop-shadow(0 0 10px rgba(232, 245, 232, 0.5)); /* إبراز خفيف */
+    }
+
+    /* ECG */
+    .ecg-container {
+      width: 100%;
+      max-width: 200px;
+      margin: 20px auto;
+    }
+
+    .ecg-svg {
+      width: 100%;
+      height: 100px;
+    }
+
+    .ecg-line {
+      fill: none;
+      stroke: #e8f5e8; /* أخضر فاتح للتباين في الأزرق المظلم */
+      stroke-width: 2;
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      animation: drawECG 2s linear infinite;
+      filter: drop-shadow(0 0 2px rgba(232, 245, 232, 0.3));
+    }
+
+    .ecg-dot {
+      visibility:hidden;
+    }
+
+    /* تحريك الرسم */
+    @keyframes drawECG {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    /* النصوص */
+    h1 {
+      font-size: 48px;
+      margin: 0;
+      letter-spacing: 2px;
+      opacity: 0;
+      transform: translateY(40px);
+      animation: fadeSlide 2s forwards 2s;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* ظل خفيف للقراءة */
+    }
+
+    .txt1 {
+      font-size: 18px;
+      margin-top: 15px;
+      color: #bbdefb; /* أزرق فاتح للتباين */
+      opacity: 0;
+      transform: translateY(40px);
+      animation: fadeSlide 2s forwards 3s;
+    }
+
+    /* التذييل */
+    .txt2 {
+      font-size: 12px;
+      color: #bbdefb;
+      position: absolute;
+      bottom: 10px;
+      transform: translateY(-50%);
+      opacity: 0;
+      animation: fadeSlide 2s forwards 4s;
+      text-align: center;
+    }
+
+    /* أنيميشن */
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.8; }
+    }
+
+    @keyframes fadeSlide {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Dark Mode (تلقائي حسب إعدادات الجهاز - ليلي: dark حقيقي) */
     @media (prefers-color-scheme: dark) {
       body {
-        background: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
+        background: linear-gradient(135deg, #121212 0%, #1e1e1e 100%); /* أسود/رمادي مظلم حقيقي، هادئ تمامًا */
+        color: #e0e0e0; /* نصوص رمادي فاتح للدارك */
+      }
+
+      .logo {
+        color: #4caf50; /* أخضر طبي فاتح للأيقونة في الدارك */
+        filter: drop-shadow(0 0 12px rgba(76, 175, 80, 0.6)); /* إبراز أخضر خفيف للتباين على الأسود */
+      }
+
+      .ecg-line {
+        stroke: #4caf50; /* أخضر طبي بدلاً من الأبيض/الأزرق للتوافق مع الدارك */
+        filter: drop-shadow(0 0 3px rgba(76, 175, 80, 0.4));
+      }
+
+      .ecg-dot {
+        visibility:hidden;
+      }
+
+      h1 {
         color: #e0e0e0;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7); /* ظل أقوى في الدارك للقراءة المثالية */
       }
 
-      body::before {
-        background: rgba(255, 255, 255, 0.03);
+      .txt1 {
+        color: #b0bec5; /* رمادي فاتح هادئ */
       }
 
-      .onboarding-container {
-        background: #1e1e1e;
-      }
-
-      .slide h2 {
-        color: #4fc3f7;
-      }
-
-      .slide p {
+      .txt2 {
         color: #b0bec5;
       }
 
-      .dot {
-        background: #424242;
-      }
-
-      .dot.active {
-        background: linear-gradient(135deg, #4fc3f7, #81d4fa);
-      }
-
-      .nav-btn {
-        color: #4fc3f7;
-      }
-
-      .nav-btn.prev {
-        color: #78909c; /* رمادي للـ previous إذا كان غير متاح */
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-
-      .nav-btn.prev:hover {
-        color: #78909c;
-        transform: none;
-      }
-
-      .signup-btn {
-        background: linear-gradient(135deg, #4fc3f7, #81d4fa);
-      }
-
-      .login-btn {
-        background: linear-gradient(135deg, #66bb6a, #a5d6a7);
-      }
-
-      .slide-image {
-        border: 3px solid rgba(79, 195, 247, 0.3);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.1);
+      /* تعديل على pulse في الدارك ليكون أهدأ (opacity أقل لتجنب الإرهاق) */
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 0.95; }
+        50% { transform: scale(1.1); opacity: 0.75; }
       }
     }
 
-    /* السلايدات - نفس السابق */
-    .slides-wrapper {
-      flex: 1;
-      position: relative;
-      overflow: hidden;
-      height: 70%;
-    }
-
-    .slide {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 50px 30px;
-      text-align: center;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(50px) scale(0.95);
-      transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
-      z-index: 1;
-    }
-
-    .slide.active {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0) scale(1);
-      z-index: 3;
-    }
-
-    .slide.prev {
-      opacity: 0.5;
-      transform: translateY(-20px) scale(0.98);
-      z-index: 2;
-    }
-
-    .slide.next {
-      opacity: 0;
-      transform: translateY(50px) scale(0.95);
-      z-index: 1;
-    }
-
-    .slide.active {
-      animation: slideFadeIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    }
-
-    @keyframes slideFadeIn {
-      0% {
-        opacity: 0;
-        transform: translateY(50px) scale(0.95);
-      }
-      70% {
-        opacity: 1;
-        transform: translateY(-5px) scale(1.02);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    .slide.leaving {
-      animation: slideOutLeft 0.5s ease-out forwards;
-    }
-
-    @keyframes slideOutLeft {
-      0% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-      100% {
-        opacity: 0;
-        transform: translateX(100%) translateY(0) scale(0.95);
-      }
-    }
-
-    /* الصور (نفس السابق) */
-    .slide-image {
-      width: 100%;
-      max-width: 300px;
-      height: 200px;
-      margin-bottom: 30px;
-      border-radius: 15px;
-      background-size: cover;
-      background-position: center;
-      box-shadow: 0 15px 40px rgba(0, 116, 212, 0.15), inset 0 0 20px rgba(255, 255, 255, 0.5);
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      border: 3px solid rgba(30, 136, 229, 0.2);
-    }
-
-    .slide-image:hover,
-    .slide-image:active {
-      transform: scale(1.02);
-      box-shadow: 0 20px 50px rgba(0, 116, 212, 0.25);
-    }
-
-    .slide-image::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, rgba(0, 116, 212, 0.08), rgba(76, 175, 80, 0.08), rgba(255, 152, 0, 0.08));
-      z-index: 1;
-      border-radius: 15px;
-      animation: gentlePulse 3s ease-in-out infinite;
-    }
-
-    @keyframes gentlePulse {
-      0%, 100% { opacity: 0.5; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.03); }
-    }
-
-    .slide-image i {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 80px;
-      color: rgba(255, 255, 255, 0.9);
-      z-index: 2;
-      text-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
-    }
-
-    .slide h2 {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 15px;
-      color: #1e88e5;
-      line-height: 1.3;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .slide p {
-      font-size: 16px;
-      font-weight: 400;
-      color: #546e7a;
-      line-height: 1.6;
-      margin-bottom: 20px;
-      max-width: 320px;
-      padding: 0 10px;
-    }
-
-    /* Dots Navigation */
-    .dots {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin: 25px 0;
-      padding: 0 30px;
-    }
-
-    .dot {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: #e0e0e0;
-      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .dot.active {
-      background: linear-gradient(135deg, #1e88e5, #42a5f5);
-      transform: scale(1.3);
-      box-shadow: 0 0 15px rgba(30, 136, 229, 0.6);
-    }
-
-    /* Navigation Buttons - محسن مع زر السابق */
-    .navigation {
-      position: absolute;
-      bottom: 30px;
-      left: 0;
-      right: 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 30px;
-      z-index: 10;
-    }
-
-    .nav-btn {
-      background: none;
-      border: none;
-      color: #1e88e5;
-      font-size: 16px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: color 0.3s ease;
-      padding: 12px 0;
-      min-width: 80px;
-    }
-
-    .nav-btn:hover {
-      color: #1565c0;
-      transform: scale(1.05);
-    }
-
-    .nav-btn.prev {
-      color: #78909c;
-      opacity: 0.8;
-      min-width: 60px;
-    }
-
-    .nav-btn.prev:hover {
-      color: #546e7a;
-      opacity: 1;
-      transform: scale(1.05);
-    }
-
-    .nav-btn.prev:disabled {
-      color: #78909c;
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    /* الزرين في السلايد الأخير */
-    .final-buttons {
-      display: none;
-      flex-direction: column;
-      gap: 15px;
-      width: 100%;
-      max-width: 280px;
-      margin: 20px auto;
-      padding: 0 10px;
-    }
-
-    .final-buttons.show {
-      display: flex;
-    }
-
-    .signup-btn, .login-btn {
-      width: 100%;
-      padding: 14px 20px;
-      border: none;
-      border-radius: 30px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.4s ease;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .signup-btn {
-      background: linear-gradient(135deg, #1e88e5, #42a5f5);
-      color: white;
-    }
-
-    .login-btn {
-      background: linear-gradient(135deg, #4caf50, #81c784);
-      color: white;
-    }
-
-    .signup-btn:hover, .login-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-    }
-
-    .signup-btn:active, .login-btn:active {
-      transform: translateY(0);
-    }
-
-    #nextBtn.final { display: none; }
-
-    /* Responsive */
+    /* Responsive - للشاشات الصغيرة/الكبيرة */
     @media (max-width: 480px) {
-      .slides-wrapper { height: 65%; }
-      .slide { padding: 40px 20px; }
-      .slide-image { max-width: 250px; height: 180px; }
-      .slide-image i { font-size: 60px; }
-      .slide h2 { font-size: 24px; margin-bottom: 10px; }
-      .slide p { font-size: 14px; max-width: 280px; }
-      .final-buttons { gap: 10px; max-width: 100%; }
-      .signup-btn, .login-btn { padding: 12px 18px; font-size: 14px; }
-      .dots { gap: 8px; margin: 15px 0; padding: 0 20px; }
-      .dot { width: 10px; height: 10px; }
-      .navigation { bottom: 20px; padding: 0 20px; }
-      .nav-btn { font-size: 14px; min-width: 60px; }
+      .container {
+        padding: 10px;
+      }
+
+      .logo {
+        font-size: 50px;
+      }
+
+      h1 {
+        font-size: 36px;
+      }
+
+      .txt1 {
+        font-size: 16px;
+      }
     }
 
-    @media (min-height: 800px) { .slide { padding: 60px 30px; } }
-    @media (max-height: 500px) and (orientation: landscape) {
-      .slides-wrapper { height: 60%; }
-      .slide { padding: 20px 15px; }
-      .slide-image { height: 120px; max-width: 200px; }
-      .slide h2 { font-size: 20px; }
-      .slide p { font-size: 12px; max-width: 250px; }
-      .final-buttons { gap: 8px; max-width: 200px; }
-      .navigation { bottom: 10px; padding: 0 15px; }
-    }
+    @media (min-width: 1024px) {
+      .container {
+        max-width: 900px;
+        padding: 40px;
+      }
 
-    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-      .slide-image { box-shadow: 0 20px 50px rgba(0, 116, 212, 0.2); }
+      .logo {
+        font-size: 80px;
+      }
+
+      h1 {
+        font-size: 60px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="onboarding-container">
-    <div class="slides-wrapper">
-      <!-- Slide 1: ترحيب -->
-      <div class="slide active" data-slide="1">
-        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=500&fit=crop');">
-          <i class="fas fa-heartbeat" style="color: #e91e63;"></i>
-        </div>
-        <h2>مرحباً بك في طبيبي</h2>
-        <p>أول تطبيق تشخيص أمراض بالذكاء الاصطناعي في سوريا، رفيقك الصحي الذكي لتشخيص دقيق وسريع.</p>
-      </div>
+  <div class="container">
+    <!-- أيقونة -->
+    <div class="logo"><i class="fas fa-stethoscope"></i></div>
 
-      <!-- Slide 2: تشخيص سريع -->
-      <div class="slide" data-slide="2">
-        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500&fit=crop');">
-          <i class="fas fa-stethoscope" style="color: #2196f3;"></i>
-        </div>
-        <h2>تشخيص سريع ودقيق</h2>
-        <p>وصف أعراضك، ويحلل الذكاء الاصطناعي البيانات ليقدم تشخيصات محتملة مدعومة بمعارف طبية عالمية.</p>
-      </div>
-
-      <!-- Slide 3: استشارات -->
-      <div class="slide" data-slide="3">
-        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=500&fit=crop');">
-          <i class="fas fa-user-md" style="color: #4caf50;"></i>
-        </div>
-        <h2>استشارات طبية ذكية</h2>
-        <p>احصل على نصائح وخطط علاجية مخصصة كأنك تتحدث مع طبيب حقيقي، متاح 24/7.</p>
-      </div>
-
-      <!-- Slide 4: خصوصية -->
-      <div class="slide" data-slide="4">
-        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1620712943543-53db4e24336c?w=500&fit=crop');">
-          <i class="fas fa-shield-alt" style="color: #ff9800;"></i>
-        </div>
-        <h2>خصوصية بياناتك محمية</h2>
-        <p>جميع بياناتك مشفرة وآمنة بنسبة 100%، ملتزمون بأعلى معايير الخصوصية الطبية العالمية.</p>
-      </div>
-
-      <!-- Slide 5: توفير -->
-      <div class="slide" data-slide="5">
-        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&fit=crop');">
-          <i class="fas fa-clock" style="color: #9c27b0;"></i>
-        </div>
-        <h2>وفر وقتك وجهدك</h2>
-        <p>لا تنتظر في طوابير العيادات؛ احصل على إجابات فورية وموثوقة مباشرة من هاتفك الذكي.</p>
-      </div>
-
-      <!-- Slide 6: بدء -->
-      <div class="slide" data-slide="6">
-        <div class="slide-image" style="background-image: url('https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&fit=crop');">
-          <i class="fas fa-laptop-medical" style="color: #ff5722;"></i>
-        </div>
-        <h2>ابدأ رحلتك الصحية اليوم</h2>
-        <p>انضم إلى مجتمع طبيبي واستمتع بتشخيصات ذكية لصحة أفضل. التسجيل مجاني وسهل!</p>
-        <div class="final-buttons show">
-          <button class="signup-btn" onclick="signupUser()">
-            <i class="fas fa-user-plus"></i> تسجيل حساب جديد
-          </button>
-          <button class="login-btn" onclick="loginUser()">
-            <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
-          </button>
-        </div>
-      </div>
+    <!-- ECG مع خط أخضر طبي في الدارك ونقطة خضراء -->
+    <div class="ecg-container">
+      <svg class="ecg-svg" viewBox="0 0 500 100" preserveAspectRatio="none">
+        <polyline id="ecg-path" class="ecg-line"
+          points="0,50 40,50 70,10 100,90 140,50 180,50 210,20 240,80 280,50 320,50 350,10 380,90 420,50 460,50 500,50" />
+        <circle class="ecg-dot" r="4" visibility="visible"> <!-- جعلت r=4 لتكون مرئية دائمًا، مع animateMotion -->
+          <animateMotion dur="3s" repeatCount="indefinite">
+            <mpath href="#ecg-path"/>
+          </animateMotion>
+        </circle>
+      </svg>
     </div>
 
-    <!-- Dots Navigation -->
-    <div class="dots">
-      <span class="dot active" onclick="goToSlide(1)"></span>
-      <span class="dot" onclick="goToSlide(2)"></span>
-      <span class="dot" onclick="goToSlide(3)"></span>
-      <span class="dot" onclick="goToSlide(4)"></span>
-      <span class="dot" onclick="goToSlide(5)"></span>
-      <span class="dot" onclick="goToSlide(6)"></span>
-    </div>
-
-    <!-- Navigation Buttons - زر السابق بدلاً من تخطي -->
-    <div class="navigation">
-      <button class="nav-btn prev" id="prevBtn" onclick="previousSlide()">السابق</button>
-      <button class="nav-btn" id="nextBtn" onclick="nextSlide()">التالي</button>
-    </div>
+    <!-- اسم التطبيق -->
+    <h1>طــبــيبي</h1>
+    <p class="txt1">أول تطبيق ذكاء اصطناعي طبي في سوريا</p>
   </div>
 
-  <script>
-    let currentSlide = 1;
-    const totalSlides = 6;
-
-    function showSlide(n) {
-      const slides = document.querySelectorAll('.slide');
-      const dots = document.querySelectorAll('.dot');
-      const nextBtn = document.getElementById('nextBtn');
-      const prevBtn = document.getElementById('prevBtn');
-      const finalButtons = document.querySelector('.final-buttons');
-
-      // منع الخروج عن النطاق
-      if (n > totalSlides) n = totalSlides;
-      if (n < 1) n = 1;
-
-      currentSlide = n;
-
-      // إزالة كل التأثيرات السابقة
-      slides.forEach(slide => {
-        slide.classList.remove('active', 'prev', 'next', 'leaving');
-      });
-
-      if (n > currentSlide) {
-        slides[currentSlide - 1].classList.add('leaving');
-      } else if (n < currentSlide) {
-        slides[currentSlide - 1].classList.add('leaving');
-      }
-
-      slides.forEach((slide, index) => {
-        if (index + 1 === currentSlide) {
-          slide.classList.add('active');
-        } else if (index + 1 < currentSlide) {
-          slide.classList.add('prev');
-        } else {
-          slide.classList.add('next');
-        }
-      });
-
-      dots.forEach((dot, index) => dot.classList.toggle('active', index + 1 === currentSlide));
-
-      // إدارة الأزرار
-      if (currentSlide === totalSlides) {
-        nextBtn.classList.add('final');
-        nextBtn.innerHTML = '';
-        nextBtn.style.display = 'none';
-        finalButtons.classList.add('show');
-      } else {
-        nextBtn.classList.remove('final');
-        nextBtn.innerHTML = 'التالي';
-        nextBtn.style.display = 'inline-block';
-        finalButtons.classList.remove('show');
-        nextBtn.onclick = nextSlide;
-      }
-
-      if (currentSlide === 1) {
-        prevBtn.disabled = true;
-        prevBtn.classList.add('prev');
-      } else {
-        prevBtn.disabled = false;
-        prevBtn.classList.remove('prev');
-        prevBtn.onclick = previousSlide;
-      }
-    }
-
-    function nextSlide() {
-      if (currentSlide < totalSlides) {
-        showSlide(currentSlide + 1);
-      }
-    }
-
-    function previousSlide() {
-      if (currentSlide > 1) {
-        showSlide(currentSlide - 1);
-      }
-    }
-
-    function goToSlide(n) {
-      showSlide(n);
-    }
-
-    function signupUser() {
-      window.location.href = 'signup.html';
-    }
-
-    function loginUser() {
-      window.location.href = 'login.html';
-    }
-
-    // Swipe محسن لمنع الصفحة الفاضية
-    let startX = 0;
-    let endX = 0;
-
-    document.addEventListener('touchstart', (e) => {
-      startX = e.touches[0].clientX;
-    }, { passive: true });
-
-    document.addEventListener('touchend', (e) => {
-      endX = e.changedTouches[0].clientX;
-      const diff = startX - endX;
-      if (Math.abs(diff) > 60) {
-        if (diff > 0 && currentSlide < totalSlides) { // التالي فقط إذا لم نكن في الأخير
-          nextSlide();
-        } else if (diff < 0 && currentSlide > 1) { // السابق فقط إذا لم نكن في الأول
-          previousSlide();
-        }
-      }
-    }, { passive: true });
-
-    // Keyboard محسن
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight' && currentSlide > 1) {
-        previousSlide();
-      }
-      if (e.key === 'ArrowLeft' && currentSlide < totalSlides) {
-        nextSlide();
-      }
-      if (e.key === 'Enter' && currentSlide === totalSlides) {
-        signupUser();
-      }
-    });
-
-    showSlide(1);
-  </script>
+  <!-- التذييل -->
+  <p class="txt2">By Kaspa-ai ©</p>
 </body>
 </html>
