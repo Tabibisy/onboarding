@@ -54,26 +54,28 @@
 
     /* التقسيم إلى نصفين: أعلى للصور، أسفل للمحتوى - دمج أنيق */
     .upper-section {
-      height: 50vh;
+      height: 60vh; /* جعل الصور أطول (من 50vh إلى 60vh) */
       position: relative;
       overflow: hidden;
       background: #f8f9ff;
-      border-bottom-left-radius: 25px;
-      border-bottom-right-radius: 25px;
+      /* إزالة radius في الأسفل */
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
       box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.05);
     }
 
-    /* قسم النقاط الدائرية بين المربعين - دائرية وأنيقة بدون خط */
+    /* قسم النقاط الدائرية بين المربعين - خليه شفاف (background transparent وإزالة border)، ولا radius له */
     .progress-dots-section {
       height: 5vh;
       min-height: 40px;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(to bottom, #f8f9ff, #ffffff);
+      background: transparent; /* جعل الشريط شفاف */
       position: relative;
       z-index: 5;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      border-bottom: none; /* إزالة الخط السفلي */
+      border-radius: 0; /* ضمان عدم وجود radius للشريط */
     }
 
     .dots {
@@ -109,8 +111,9 @@
       display: flex;
       flex-direction: column;
       background: #ffffff;
-      border-top-left-radius: 25px;
-      border-top-right-radius: 25px;
+      /* إزالة radius في الأعلى */
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
       overflow: hidden;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
@@ -120,8 +123,9 @@
       position: relative;
       width: 100%;
       height: 100%;
-      border-bottom-left-radius: 25px;
-      border-bottom-right-radius: 25px;
+      /* إزالة radius في الأسفل */
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
       overflow: hidden;
     }
 
@@ -150,8 +154,9 @@
       height: 100%;
       object-fit: cover;
       transition: filter 0.3s ease;
-      border-bottom-left-radius: 25px;
-      border-bottom-right-radius: 25px;
+      /* إزالة radius في الأسفل */
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
     }
 
     .upper-slide:hover img {
@@ -176,16 +181,23 @@
       .upper-section {
         background: #2c2c2c;
         box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+        /* إزالة radius في Dark Mode أيضًا */
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
       }
 
       .progress-dots-section {
-        background: linear-gradient(to bottom, #2c2c2c, #1e1e1e);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        background: transparent; /* شفاف في Dark Mode أيضًا */
+        border-bottom: none;
+        border-radius: 0; /* ضمان عدم وجود radius في Dark Mode */
       }
 
       .lower-section {
         background: #1e1e1e;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        /* إزالة radius في Dark Mode أيضًا */
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
       }
 
       .dot {
@@ -268,8 +280,9 @@
       justify-content: center;
       align-items: center;
       padding: 40px 20px 20px;
-      border-top-left-radius: 25px;
-      border-top-right-radius: 25px;
+      /* إزالة radius */
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
     }
 
     .text-slide {
@@ -557,17 +570,22 @@
     /* Responsive */
     @media (max-width: 480px) {
       .upper-section {
-        height: 40vh;
-        border-bottom-left-radius: 20px;
-        border-bottom-right-radius: 20px;
+        height: 50vh; /* جعل أطول في الشاشات الصغيرة (من 40vh إلى 50vh) */
+        /* إزالة radius */
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
       }
       .progress-dots-section {
         height: 6vh;
         min-height: 35px;
+        background: transparent;
+        border-bottom: none;
+        border-radius: 0; /* ضمان عدم وجود radius في Responsive */
       }
       .lower-section {
-        border-top-left-radius: 20px;
-        border-top-right-radius: 20px;
+        /* إزالة radius */
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
       }
       .dots { 
         gap: 8px; 
@@ -579,8 +597,9 @@
       }
       .text-slides-wrapper {
         padding: 30px 10px 10px;
-        border-top-left-radius: 20px;
-        border-top-right-radius: 20px;
+        /* إزالة radius */
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
       }
       .text-slide {
         padding: 0 15px;
@@ -626,19 +645,28 @@
       }
       .progress-dots-section {
         min-height: 50px;
+        background: transparent;
+        border-bottom: none;
+        border-radius: 0; /* ضمان عدم وجود radius هنا أيضًا */
       }
     }
 
     @media (max-height: 500px) and (orientation: landscape) {
       .upper-section { 
-        height: 40vh; 
+        height: 50vh; /* أطول هنا أيضًا */
       }
       .progress-dots-section {
         height: 4vh;
         min-height: 30px;
+        background: transparent;
+        border-bottom: none;
+        border-radius: 0; /* ضمان عدم وجود radius في Landscape */
       }
       .text-slides-wrapper { 
         padding: 20px 10px 10px; 
+        /* إزالة radius */
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
       }
       .text-slide { 
         padding: 10px; 
@@ -724,7 +752,7 @@
       </div>
     </div>
 
-    <!-- قسم النقاط الدائرية بين المربعين -->
+    <!-- قسم النقاط الدائرية بين المربعين - محافظ عليها لكن شفافة، ولم أحذفها لأنها ليست بين الأزرار مباشرة؛ إذا كنت تقصد حذفها، أخبرني -->
     <div class="progress-dots-section">
       <div class="dots">
         <span class="dot active" onclick="goToSlide(1)"></span>
@@ -802,7 +830,7 @@
         </div>
       </div>
 
-      <!-- Navigation Buttons -->
+      <!-- Navigation Buttons - لم يوجد شيء بين السابق والتالي، لذا لم أحذف شيئًا؛ إذا كنت تقصد النقاط، أخبرني لأحذفها -->
       <div class="navigation" id="navigation">
         <button class="nav-btn prev" id="prevBtn" onclick="previousSlide()">السابق</button>
         <button class="nav-btn" id="nextBtn" onclick="nextSlide()">التالي</button>
